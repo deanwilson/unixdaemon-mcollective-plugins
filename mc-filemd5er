@@ -1,0 +1,42 @@
+#!/usr/bin/ruby
+require 'mcollective'
+require 'pp'
+
+include MCollective::RPC
+
+if ARGV.length > 0
+  filename = ARGV.shift
+else
+  puts "filemd5er needs a filename"
+  exit 1
+end
+
+filemd5er = rpcclient("filemd5er")
+
+
+checksums = Hash.new()
+
+filemd5er.checksum(:filename => filename).each do |result|
+  if result[:statuscode] == 0
+    key = result[:data][:checksum]
+  else
+    key = result[:statusmsg]
+  end
+  checksums[key] ||= []
+  checksums[key] << result[:sender]
+end
+
+printf "Checksums for #{filename}\n\n"
+checksums.keys.sort.each do |k|
+  printf("    %-40s found %d times\n", k, checksums[k].size)
+
+  if filemd5er.verbose
+     checksums[k].sort.each do |host|
+       puts "        #{host}"
+     end
+     puts
+  end
+    
+end
+
+filemd5er.printrpcstats
