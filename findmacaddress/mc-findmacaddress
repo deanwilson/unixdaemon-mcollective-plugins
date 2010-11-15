@@ -1,0 +1,34 @@
+#!/usr/bin/ruby
+require 'mcollective'
+
+include MCollective::RPC
+
+if ARGV.length > 0
+  macaddress = ARGV.shift
+else
+  puts "findmacaddress needs a MAC address"
+  exit 1
+end
+
+findmacaddress = rpcclient("findmacaddress")
+
+seen = Hash.new()
+
+findmacaddress.findmacaddress(:macaddress => macaddress).each do |result|
+  if result[:statuscode] == 0
+    result[:data][:sightings].each do |sighting|
+      seen[sighting[:ip]] ||= []
+      seen[sighting[:ip]] << { :by => result[:sender], :on => sighting[:interface] }
+    end
+  end
+end
+
+printf "Found MAC Address for #{macaddress}\n\n"
+seen.keys.sort.each do |ip|
+  puts "  #{ip} seen #{seen[ip].size} times"
+  seen[ip].sort { |a,b| a[:by] <=> b[:by] }.each do |sighting|
+    printf("    %-40s %-40s\n", sighting[:by], sighting[:on])
+  end
+end
+
+findmacaddress.printrpcstats
