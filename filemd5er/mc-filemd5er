@@ -4,6 +4,11 @@ require 'pp'
 
 include MCollective::RPC
 
+options = rpcoptions do |parser, options|
+   parser.define_head "Get checksum of file across many hosts"
+   parser.banner = "Usage: mc-filemd5er <file>"
+end
+
 if ARGV.length > 0
   filename = ARGV.shift
 else
@@ -11,7 +16,7 @@ else
   exit 1
 end
 
-filemd5er = rpcclient("filemd5er")
+filemd5er = rpcclient("filemd5er", :options => options)
 
 
 checksums = Hash.new()
@@ -39,4 +44,4 @@ checksums.keys.sort.each do |k|
     
 end
 
-filemd5er.printrpcstats
+printrpcstats
