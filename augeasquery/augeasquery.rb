@@ -15,7 +15,7 @@ module MCollective
         begin
           require 'augeas'
         rescue Exception => e
-          reply.fail e.to_s
+          reply.fail! e.to_s
         end
 
         aug = Augeas.open
