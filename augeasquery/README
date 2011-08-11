@@ -1,7 +1,7 @@
 Simple augeas agent that allows config file querying 
 
 # Show all the ips in the hosts file
-mco rpc --agent augeasquery --action query --argument query='/files/etc/hosts/*/ipaddr' --with-agent augeasquery -v
+mco rpc augeasquery query query='/files/etc/hosts/*/ipaddr' --with-agent augeasquery -v
 
 Determining the amount of hosts matching filter for 2 seconds .... 2
 
@@ -18,7 +18,7 @@ Determining the amount of hosts matching filter for 2 seconds .... 2
 
 # Does your ssh permit root logins?
 
-$ mco rpc --agent augeasquery --action query --argument query='/files/etc/ssh/sshd_config/PermitRootLogin' --with-agent augeasquery -v
+$ mco rpc augeasquery query query='/files/etc/ssh/sshd_config/PermitRootLogin' --with-agent augeasquery -v
 
 Determining the amount of hosts matching filter for 2 seconds .... 2
 
