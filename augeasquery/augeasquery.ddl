@@ -7,6 +7,7 @@ metadata :name => "Augeas Based Config Query",
          :timeout => 20
 
 action 'query', :description => "Query the given augeas path" do
+    display :always
 
     input :query,
           :prompt      => "Pattern to match",
