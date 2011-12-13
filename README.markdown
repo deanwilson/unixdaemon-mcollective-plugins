@@ -49,3 +49,21 @@ the hood it uses the ruby resolv lib, which has a bad reputation.
 mco rpc resolver resolve host=google.com type=MX
 mco rpc resolver resolve host=google.com type=A
 
+
+MySQL
+-----------
+
+Allows querying of global status and variables from running MySQL
+instances.
+
+In order to use this plugin you need a little bit of config. First you
+should create a user in your mysql databases that can connect via 127.0.0.1
+and run both 'SHOW GLOBAL STATUS;' and 'SHOW GLOBAL VARIABLES;'. Once this
+is done you need to create, and deploy, a file containing the authentication
+details that this plugin can use. The files contents should look like
+"__default__::dbusername::dbpassword" and the location of your config files
+should be specified as plugin.mysql.authfile = /path/to/your/file.conf in
+your mcollective config files.
+
+mco rpc mysql get_variable query=warning_count
+mco rpc mysql get_setting  query=Slow_queries
