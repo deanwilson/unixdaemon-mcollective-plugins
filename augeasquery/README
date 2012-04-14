@@ -31,3 +31,25 @@ Determining the amount of hosts matching filter for 2 seconds .... 2
 7fb56e40e631200d2f2fd43140388a68        : OK
     {:matched=>["no"]}
 
+
+# The augeas.application.rb file can be installed on the client to get a nicer interface with mco.
+# It tries to provide commands similar to augtool:
+$ mco augeas match /files/etc/ssh/sshd_config/AcceptEnv
+
+ * [ ============================================================> ] 1 / 1
+
+
+8f9e254e2851569b1c4ba6f989f273ae                                  
+    /files/etc/ssh/sshd_config/AcceptEnv    
+
+$ mco augeas print /files/etc/ssh/sshd_config/AcceptEnv
+
+ * [ ============================================================> ] 1 / 1
+
+
+8f9e254e2851569b1c4ba6f989f273ae                                  
+    /files/etc/ssh/sshd_config/AcceptEnv    
+    /files/etc/ssh/sshd_config/AcceptEnv/1 = LANG
+    /files/etc/ssh/sshd_config/AcceptEnv/2 = LC_*
+
+
