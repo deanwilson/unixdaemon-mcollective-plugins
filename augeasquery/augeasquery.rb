@@ -24,7 +24,11 @@ module MCollective
         matches = aug.match( request[:query] )
 
         matches.each do | match |
-          matched << aug.get( match )
+          if aug.get( match )
+            matched << match+" = "+aug.get( match )
+          else
+            matched << match
+          end
         end
 
         reply[:matched] = matched || []
