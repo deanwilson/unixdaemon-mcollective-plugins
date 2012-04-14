@@ -15,7 +15,7 @@ action 'query', :description => "Query the given augeas path" do
           :type        => :string,
           :validation  => '^/.+$',
           :optional    => false,
-          :maxlength    => 50
+          :maxlength    => 100
 
     output :matched,
            :description => "Path Matches",
