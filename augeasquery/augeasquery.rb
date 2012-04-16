@@ -23,7 +23,12 @@ module MCollective
         if request[:transform]
           request[:transform].split(/,/).each do |transform|
             lens, path =  transform.split(/=/)
-            aug.set('/augeas/load/'+lens+'/incl[last()+1]', path)
+            if aug.match('/augeas/load/'+lens).length > 0
+              aug.set('/augeas/load/'+lens+'/incl[last()+1]', path)
+            else
+              aug.set('/augeas/load/'+lens+'/lens', lens+'.lns')
+              aug.set('/augeas/load/'+lens+'/incl', path)
+            end
           end
           aug.load()
         end
