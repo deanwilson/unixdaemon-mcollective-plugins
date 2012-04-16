@@ -1,14 +1,27 @@
 class MCollective::Application::Augeas<MCollective::Application
   description "Client to the AugeasQuery Plugin Execution system"
-  usage "Usage: augeas [match|print] <path>"
+  usage "Usage: augeas [OPTIONS] <ACTION> <PATH>"
+
+  option :transform,
+      :description    => "Associate lens to path",
+      :arguments      => ["--transform LENS=PATH[,LENS=PATH]*"]
 
   def post_option_parser(configuration)
-    configuration[:command] = ARGV.shift if ARGV.size > 0
-    configuration[:query] = ARGV.shift if ARGV.size > 0
+    if ARGV.length >= 2
+      configuration[:command] = ARGV.shift
+      configuration[:path] = ARGV.shift
+
+      unless configuration[:command].match(/^(match|count)$/)
+        raise "Action must be match or count"
+      end
+    else
+      STDERR.puts("No action and path specified")
+      exit!
+    end
   end
 
   def validate_configuration(configuration)
-    raise "Please specify a query" unless configuration.include?(:query)
+    raise "Please specify a path" unless configuration.include?(:path)
   end
 
   def main
@@ -17,7 +30,7 @@ class MCollective::Application::Augeas<MCollective::Application
     when "match"
       augeas = rpcclient("augeasquery")
 
-      augeas_results = augeas.query(:query => configuration[:query])
+      augeas_results = augeas.query(:query => configuration[:path], :transform => configuration[:transform])
 
       puts
 
@@ -30,18 +43,16 @@ class MCollective::Application::Augeas<MCollective::Application
 
       puts
 
-    when "print"
+    when "count"
       augeas = rpcclient("augeasquery")
 
-      augeas_results = augeas.query(:query => configuration[:query]+"|"+configuration[:query]+"//*")
+      augeas_results = augeas.query(:query => configuration[:path], :transform => configuration[:transform])
 
       puts
 
       augeas_results.each do |result|
-        printf("%-40s\n", result[:sender])
-        result[:data][:matched].each do |matched|
-          printf("    %-40s\n", matched)
-        end
+         printf("%-40s\n", result[:sender])
+         printf("    %d matches found\n", result[:data][:matched].length)
       end
 
       puts

@@ -19,6 +19,15 @@ module MCollective
         end
 
         aug = Augeas.open
+
+        if request[:transform]
+          request[:transform].split(/,/).each do |transform|
+            lens, path =  transform.split(/=/)
+            aug.set('/augeas/load/'+lens+'/incl[last()+1]', path)
+          end
+          aug.load()
+        end
+
         matched = []
 
         matches = aug.match( request[:query] )
