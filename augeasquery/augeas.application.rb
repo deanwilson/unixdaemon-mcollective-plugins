@@ -36,8 +36,10 @@ class MCollective::Application::Augeas<MCollective::Application
 
       augeas_results.each do |result|
         printf("%-40s\n", result[:sender])
-        result[:data][:matched].each do |matched|
-          printf("    %-40s\n", matched)
+        if result[:data]
+          result[:data][:matched].each do |matched|
+            printf("    %-40s\n", matched)
+          end
         end
       end
 
