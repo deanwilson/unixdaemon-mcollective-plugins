@@ -31,3 +31,48 @@ Determining the amount of hosts matching filter for 2 seconds .... 2
 7fb56e40e631200d2f2fd43140388a68        : OK
     {:matched=>["no"]}
 
+
+# The augeas.application.rb file can be installed on the client to get a nicer interface with mco.
+# It tries to provide commands similar to augtool:
+$ mco augeas match /files/etc/ssh/sshd_config/AcceptEnv
+
+ * [ ============================================================> ] 1 / 1
+
+
+8f9e254e2851569b1c4ba6f989f273ae                                  
+    /files/etc/ssh/sshd_config/AcceptEnv    
+
+$ mco augeas print /files/etc/ssh/sshd_config/AcceptEnv
+
+ * [ ============================================================> ] 1 / 1
+
+
+8f9e254e2851569b1c4ba6f989f273ae                                  
+    /files/etc/ssh/sshd_config/AcceptEnv    
+    /files/etc/ssh/sshd_config/AcceptEnv/1 = LANG
+    /files/etc/ssh/sshd_config/AcceptEnv/2 = LC_*
+
+# The --transform option allows to add mappings between lenses and paths.
+# The mappings are in the form "Lens1=/path1,Lens2=/path2,etc."
+$ mco augeas match --transform "Desktop=/usr/share/applications/*.desktop"  '//Desktop\ Entry/Version'
+
+ * [ ============================================================> ] 2 / 2
+
+
+8f9e254e2851569b1c4ba6f989f273ae                                  
+    /files/usr/share/applications/gnome-sudoku.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/remmina.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/activity-log-manager-ccpanel.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/shotwell-viewer.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/empathy-accounts.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/deja-dup-preferences.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/inkscape.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/clusterssh.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/shotwell.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/junglediskworkgroup.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/htop.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/nact.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/indicator-datetime-preferences.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/gimp.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/deja-dup-ccpanel.desktop/Desktop Entry/Version = 1.0
+    /files/usr/share/applications/empathy.desktop/Desktop Entry/Version = 1.0
