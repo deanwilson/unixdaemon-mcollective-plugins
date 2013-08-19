@@ -14,14 +14,16 @@ action "resolve", :description => "Resolve host (and record type)" do
           :description => "The host to resolve",
           :type        => :string,
           :validation  => '.',
-          :optional    => false
+          :optional    => false,
+          :maxlength   => 80
 
     input :type,
           :prompt      => "Record type",
           :description => "The record type to resolve.",
           :type        => :string,
           :validation  => '.', # TODO
-          :optional    => true
+          :optional    => true,
+          :maxlength   => 80
 
     output :records,
            :description => "Query Results",
